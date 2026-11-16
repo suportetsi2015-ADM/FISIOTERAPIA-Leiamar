@@ -1,0 +1,14 @@
+{
+  "appointment": {
+    "id": "APT-4971",
+    "patientName": "Teste Celular",
+    "patientPhone": "92999999999",
+    "date": "2026-10-07",
+    "timeSlot": "09:00",
+    "service": "Pilates",
+    "status": "pendente",
+    "createdAt": "2026-10-07T15:09:36.668Z"
+  },
+  "timestamp": 1791385776669,
+  "acknowledged": false
+}
