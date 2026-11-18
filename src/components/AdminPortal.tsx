@@ -45,7 +45,9 @@ import {
   Sliders,
   Palette,
   ShieldAlert,
-  AlertTriangle
+  AlertTriangle,
+  Globe,
+  Copy
 } from 'lucide-react';
 import { useAdminAuth } from '../data/adminAuthStore';
 import { setUserPassword } from '../data/userAuthStore';
@@ -118,6 +120,17 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToSite }) => {
 
   // Admin tabs
   const [activeTab, setActiveTab] = useState<AdminTab>('inicio');
+  const [copiedLinkType, setCopiedLinkType] = useState<string | null>(null);
+
+  const handleCopyAdminLink = (url: string, label: string) => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url);
+      }
+      setCopiedLinkType(label);
+      setTimeout(() => setCopiedLinkType(null), 2500);
+    } catch (_) {}
+  };
 
   // Photo management state
   const photos = useOfficialPhotos();
@@ -571,17 +584,16 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToSite }) => {
               </button>
 
 
-              <button
-                type="button"
-                onClick={() => {
-                  window.open('/#usuario', '_blank');
-                }}
+              <a
+                href={`/${typeof window !== 'undefined' ? window.location.search : ''}#usuario`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="hidden lg:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-[#8C3B50] bg-[#FFFDFB] hover:bg-[#FFEBF0] border border-[#FCD6E0] transition-colors cursor-pointer"
                 title="Acesso completo aos módulos de usuário (Aulas, Agenda, Financeiro e Folha)"
               >
                 <Users className="w-3.5 h-3.5 text-[#D85072]" />
                 <span>Módulos de Usuário</span>
-              </button>
+              </a>
 
               <button
                 onClick={onBackToSite}
@@ -800,6 +812,65 @@ export const AdminPortal: React.FC<AdminPortalProps> = ({ onBackToSite }) => {
               <p className="text-sm text-[#5B444C] mt-1 max-w-2xl">
                 Altere a sua senha de acesso a este portal externo. Certifique-se de guardar sua nova senha em local seguro.
               </p>
+
+              {/* Links Externos Dedicados e 100% Separados da One Page */}
+              <div className="mt-6 p-4 sm:p-5 rounded-2xl bg-[#FFFDFB] border border-[#FCD6E0] space-y-3">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#9C2744]">
+                  <Globe className="w-4 h-4 text-[#D85072]" />
+                  <span>Links Externos Exclusivos do Administrador (100% Separados da One Page)</span>
+                </div>
+                <p className="text-xs text-[#5B444C]">
+                  Acesse o painel administrativo diretamente sem carregar a página pública, mantendo login e senha obrigatórios:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-[#FCD6E0]">
+                    <div className="min-w-0">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#8C3B50]">
+                        Link Direto do Servidor Atual (Ativo Agora)
+                      </span>
+                      <code className="text-xs font-mono text-[#26161B] truncate block">
+                        {typeof window !== 'undefined'
+                          ? `${window.location.origin}/admin.html${window.location.search || ''}`
+                          : 'https://draleiamar.online/admin.html'}
+                      </code>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleCopyAdminLink(
+                          typeof window !== 'undefined'
+                            ? `${window.location.origin}/admin.html${window.location.search || ''}`
+                            : 'https://draleiamar.online/admin.html',
+                          'current-server'
+                        )
+                      }
+                      className="px-2.5 py-1.5 rounded-lg bg-[#FFEBF0] hover:bg-[#FCD6E0] text-[#9C2744] text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer transition-colors"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>{copiedLinkType === 'current-server' ? 'Copiado!' : 'Copiar'}</span>
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-white border border-[#FCD6E0]">
+                    <div className="min-w-0">
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#8C3B50]">
+                        Domínio Principal (Via Redirecionamento /#admin)
+                      </span>
+                      <code className="text-xs font-mono text-[#26161B] truncate block">
+                        https://draleiamar.online/#admin
+                      </code>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleCopyAdminLink('https://draleiamar.online/#admin', 'domain-hash')}
+                      className="px-2.5 py-1.5 rounded-lg bg-[#FFEBF0] hover:bg-[#FCD6E0] text-[#9C2744] text-xs font-semibold flex items-center gap-1 flex-shrink-0 cursor-pointer transition-colors"
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                      <span>{copiedLinkType === 'domain-hash' ? 'Copiado!' : 'Copiar'}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {securityToast && (

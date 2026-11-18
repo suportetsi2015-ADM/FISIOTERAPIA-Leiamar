@@ -177,7 +177,7 @@ export const AdminOfficialPhotoSyncModal: React.FC<AdminOfficialPhotoSyncModalPr
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFEBF0] text-[#9C2744] text-[11px] font-bold tracking-wider uppercase mb-1 border border-[#FCD6E0]">
                 <Globe className="w-3.5 h-3.5 text-[#D85072]" />
-                <span>Servidor Global • leiamarpilates.online</span>
+                <span>Servidor Global • draleiamar.online</span>
               </div>
               <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#26161B]">
                 Substituição Definitiva das Fotos da Dra. Léia Mar

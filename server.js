@@ -745,6 +745,8 @@ async function startServer() {
     }
     next();
   });
+  const distDir = path3.resolve(__dirname, "dist");
+  const hasDist = fs3.existsSync(distDir) && fs3.existsSync(path3.resolve(distDir, "index.html"));
   app.get(["/admin", "/admin/", "/admin.html", "/painel", "/painel/", "/painel-admin", "/admin-login"], (req, res, next) => {
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0");
     res.setHeader("Pragma", "no-cache");
@@ -760,8 +762,6 @@ async function startServer() {
     }
     next();
   });
-  const distDir = path3.resolve(__dirname, "dist");
-  const hasDist = fs3.existsSync(distDir) && fs3.existsSync(path3.resolve(distDir, "index.html"));
   if (isProd || hasDist && process.env.VITE_DEV !== "true") {
     console.log("[Server] Modo Produ\xE7\xE3o: servindo arquivos est\xE1ticos de", distDir);
     app.use(

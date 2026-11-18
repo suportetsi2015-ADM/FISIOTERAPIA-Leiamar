@@ -1,6 +1,13 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # Rotas exclusivas e independentes do Painel do Administrador (sem carregar a One Page)
+  RewriteRule ^admin/?$ /admin.html [L]
+  RewriteRule ^painel/?$ /admin.html [L]
+  RewriteRule ^painel-admin/?$ /admin.html [L]
+  RewriteRule ^admin-login/?$ /admin.html [L]
+
   RewriteRule ^index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

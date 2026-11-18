@@ -277,7 +277,11 @@ async function startServer() {
     next();
   });
 
-  // 4.2 Rota externa 100% independente e dedicada para o Painel do Administrador
+  // 4.2 Diretório de build de produção (declarado antes das rotas estáticas)
+  const distDir = path.resolve(__dirname, 'dist');
+  const hasDist = fs.existsSync(distDir) && fs.existsSync(path.resolve(distDir, 'index.html'));
+
+  // 4.3 Rota externa 100% independente e dedicada para o Painel do Administrador
   app.get(['/admin', '/admin/', '/admin.html', '/painel', '/painel/', '/painel-admin', '/admin-login'], (req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
     res.setHeader('Pragma', 'no-cache');
@@ -295,8 +299,6 @@ async function startServer() {
   });
 
   // 5. Servir arquivos estáticos ou middleware do Vite conforme ambiente
-  const distDir = path.resolve(__dirname, 'dist');
-  const hasDist = fs.existsSync(distDir) && fs.existsSync(path.resolve(distDir, 'index.html'));
 
   if (isProd || (hasDist && process.env.VITE_DEV !== 'true')) {
     console.log('[Server] Modo Produção: servindo arquivos estáticos de', distDir);

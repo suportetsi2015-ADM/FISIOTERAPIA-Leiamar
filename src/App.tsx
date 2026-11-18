@@ -99,8 +99,8 @@ export default function App() {
   };
 
   useEffect(() => {
-    // If the site is opened with a trailing '#' (e.g. https://leiamarpilates.online/#),
-    // cleanly normalize the URL to https://leiamarpilates.online/ without reloading
+    // If the site is opened with a trailing '#' (e.g. https://draleiamar.online/#),
+    // cleanly normalize the URL to https://draleiamar.online/ without reloading
     if (typeof window !== 'undefined') {
       if (
         window.location.hash === '#' ||
